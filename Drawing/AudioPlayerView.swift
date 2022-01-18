@@ -10,19 +10,34 @@ public enum AudioPlayerState {
 }
 
 public struct AudioPlayerView: View {
-  @State public var sliderValue : Double = 0
-  var body: some View {
+  @State public var progress : Double = 0
+  @State public var lenghtOfVideosInSeconds : Int = 60
+  
+  private var progressInSeconds : Binding<Double> { Binding (
+      get: { progress *  Double(lenghtOfVideosInSeconds) },
+      set: { _ in  }
+      )
+  }
+  
+  public func displayCurrentProgress() {
+    
+  }
+  
+  public func displayRemainingTime() {
+    
+  }
+  
+ public var body: some View {
     GeometryReader {proxy in
       ZStack {
         Capsule().fill(Color.gray)
-        
         HStack() {
           PlayPauseLoadingIcon()
             .frame(width: min(proxy.size.width,proxy.size.height) ,
                    height: min(proxy.size.width,proxy.size.height))
           Text("00:00")
           VStack {
-            AudioProgressBarSlider(value: $sliderValue, in: 0...60, step: 1)
+            AudioProgressBarSlider(value: progressInSeconds, in: 0...Double(lenghtOfVideosInSeconds), step: 1)
             .background(Color.blue)
           }
           Text("00:00")
