@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Drawing
-//
-//  Created by Nattapong Unaregul on 11/01/2022.
-//
-
 import SwiftUI
 
 struct ContentView: View {

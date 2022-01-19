@@ -11,29 +11,30 @@ public enum AudioPlayerState {
 
 public struct AudioPlayerView: View {
   //MARK:- Progresss between 0 and 1
-//  @State public var lenghtOfVideosInSeconds : Int = 60
-  
   @Binding var progressInSeconds : Double
   var lenghtOfVideosInSeconds : Int
-  @State var displayForward : String = ""
-  @State var displayBackward : String = ""
+  @State var displayForward : String
+  @State var displayBackward : String
   
   public init(progressInSeconds : Binding<Double> , lenghtOfVideosInSeconds :  Int) {
     _progressInSeconds = progressInSeconds
     self.lenghtOfVideosInSeconds = lenghtOfVideosInSeconds
+    _displayForward = State(initialValue: AudioPlayerView.calDisplayForward(progressInSeconds.wrappedValue))
+    _displayBackward = State(initialValue: AudioPlayerView.calDisplayBackward(progressInSeconds.wrappedValue,lenght: lenghtOfVideosInSeconds))
   }
   
-  private func fraction(_ s : Int) -> (Int,Int,Int) {
+  private static func fraction(_ s : Int) -> (Int,Int,Int) {
     return (s / 3600, (s % 3600) / 60, (s % 3600) % 60)
   }
   
-  public func calDisplayForward(_ s : Double) -> String {
+  public static func calDisplayForward(_ s : Double) -> String {
     let (_, minutes,seconds) = fraction(Int(floor(s)))
-    return String(format: "%02d:%02d", minutes,seconds)
+    let k = String(format: "%02d:%02d", minutes,seconds)
+    return k
   }
   
-  public func calDisplayBackward(_ s : Double) -> String {
-    let remainingSeconds = Int(floor(Double(lenghtOfVideosInSeconds) - s))
+  public static func calDisplayBackward(_ s : Double,lenght : Int) -> String {
+    let remainingSeconds = Int(floor(Double(lenght) - s))
     let (_, minutes,seconds) = fraction(remainingSeconds)
     return String(format: "%02d:%02d", minutes,seconds)
   }
@@ -50,8 +51,8 @@ public struct AudioPlayerView: View {
           VStack {
             AudioProgressBarSlider(value: $progressInSeconds, in: 0...Double(lenghtOfVideosInSeconds), step: 1)
               .onChange(of: progressInSeconds, perform: { newValue in
-                self.displayForward = calDisplayForward(newValue)
-                self.displayBackward = calDisplayBackward(newValue)
+                self.displayForward = AudioPlayerView.calDisplayForward(newValue)
+                self.displayBackward = AudioPlayerView.calDisplayBackward(newValue, lenght: self.lenghtOfVideosInSeconds)
               })
               .background(Color.blue)
           }
@@ -71,9 +72,7 @@ struct PlayPauseLoadingIcon : View {
         .fill(Color.black)
       Playicon()
         .fill(Color.blue)
-        .onTapGesture {
-          print("tap")
-        }
+        .onTapGesture {print("tap")}
     }
   }
   
