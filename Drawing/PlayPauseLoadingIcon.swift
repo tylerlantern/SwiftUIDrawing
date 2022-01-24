@@ -14,18 +14,21 @@ struct PlayPauseLoadingIcon : View {
       case .readyToPlay :
         Playicon()
           .fill(backgroundColor)
-          .onTapGesture {
-            onTapPlay?()
-          }
       case .playing :
         PauseIcon()
           .stroke(backgroundColor,lineWidth:  5)
-          .onTapGesture {
-            state = .readyToPlay
-            onPause?()
-          }
       case .loading:
         ProgressView().tint(Color.gray)
+      }
+    }.onTapGesture {
+      switch state {
+        case .readyToPlay :
+          onTapPlay?()
+      case .playing :
+        state = .readyToPlay
+        onPause?()
+      case .loading :
+        break ;
       }
     }
 //    .background(Color.black)
