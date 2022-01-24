@@ -37,7 +37,13 @@ struct AudioProgressBarSlider<V>: View where V: BinaryFloatingPoint, V.Stride: B
                 RoundedRectangle(cornerRadius: length / 2)
                     .foregroundColor(primaryColor)
                     .frame(width: proxy.size.width * ratio, height: length * 0.38)
-
+                    .gesture(
+                        DragGesture(minimumDistance: 0)
+                            .onEnded {
+                                onDrag?()
+                                updateOnTap(value: $0, proxy: proxy)
+                            }
+                    )
                 // MARK: - Thumb
 
                 Circle()
