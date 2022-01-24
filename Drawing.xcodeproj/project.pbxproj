@@ -18,7 +18,8 @@
 		BE0B0DA5278D7C7B00FACDC5 /* BadgeBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B0DA4278D7C7B00FACDC5 /* BadgeBackground.swift */; };
 		BE0B0DA7278D8AFD00FACDC5 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B0DA6278D8AFD00FACDC5 /* AudioPlayerView.swift */; };
 		BE5D09E82797F36C000708DD /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5D09E72797F36C000708DD /* AudioPlayer.swift */; };
-		BE76BAF12796BA4A00BA70E2 /* LockerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76BAF02796BA4A00BA70E2 /* LockerSlider.swift */; };
+		BE76BAF12796BA4A00BA70E2 /* AudioProgressBarSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76BAF02796BA4A00BA70E2 /* AudioProgressBarSlider.swift */; };
+		BEE249EF279E6134000CB56C /* PlayPauseLoadingIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE249EE279E6134000CB56C /* PlayPauseLoadingIcon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +54,8 @@
 		BE0B0DA4278D7C7B00FACDC5 /* BadgeBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeBackground.swift; sourceTree = "<group>"; };
 		BE0B0DA6278D8AFD00FACDC5 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		BE5D09E72797F36C000708DD /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
-		BE76BAF02796BA4A00BA70E2 /* LockerSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockerSlider.swift; sourceTree = "<group>"; };
+		BE76BAF02796BA4A00BA70E2 /* AudioProgressBarSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioProgressBarSlider.swift; sourceTree = "<group>"; };
+		BEE249EE279E6134000CB56C /* PlayPauseLoadingIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayPauseLoadingIcon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,8 +113,9 @@
 				BE0B0DA2278D7C2C00FACDC5 /* HexagonParameters.swift */,
 				BE0B0DA4278D7C7B00FACDC5 /* BadgeBackground.swift */,
 				BE0B0DA6278D8AFD00FACDC5 /* AudioPlayerView.swift */,
-				BE76BAF02796BA4A00BA70E2 /* LockerSlider.swift */,
+				BE76BAF02796BA4A00BA70E2 /* AudioProgressBarSlider.swift */,
 				BE5D09E72797F36C000708DD /* AudioPlayer.swift */,
+				BEE249EE279E6134000CB56C /* PlayPauseLoadingIcon.swift */,
 			);
 			path = Drawing;
 			sourceTree = "<group>";
@@ -273,8 +276,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE0B0D7B278D7C0E00FACDC5 /* ContentView.swift in Sources */,
-				BE76BAF12796BA4A00BA70E2 /* LockerSlider.swift in Sources */,
+				BE76BAF12796BA4A00BA70E2 /* AudioProgressBarSlider.swift in Sources */,
 				BE5D09E82797F36C000708DD /* AudioPlayer.swift in Sources */,
+				BEE249EF279E6134000CB56C /* PlayPauseLoadingIcon.swift in Sources */,
 				BE0B0DA7278D8AFD00FACDC5 /* AudioPlayerView.swift in Sources */,
 				BE0B0DA5278D7C7B00FACDC5 /* BadgeBackground.swift in Sources */,
 				BE0B0DA3278D7C2C00FACDC5 /* HexagonParameters.swift in Sources */,

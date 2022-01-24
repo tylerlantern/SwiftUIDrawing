@@ -58,7 +58,7 @@ public class AudioPlayer: NSObject {
     return self
   }
   
-  public func loadAudioUrl(audioURL: String, itemId: Int, seconds: Double) {
+  public func loadAudioUrl(audioURL: String, seconds: Double) {
     try! AVAudioSession.sharedInstance().setCategory(.playback)
     self.removePeriodicTimeObserver()
     guard let url = URL(string: audioURL) else { return }
@@ -70,7 +70,7 @@ public class AudioPlayer: NSObject {
     self.addEndItemObserver()
   }
   
-  public func setSeekToTimePlayer(seconds: Float64, itemId: Int) {
+  public func setSeekToTimePlayer(seconds: Float64) {
     let cmTime = CMTimeMakeWithSeconds(seconds, preferredTimescale: 1_000)
     player.seek(to: cmTime)
 
@@ -151,10 +151,14 @@ public class AudioPlayer: NSObject {
       context: &self.playerItemContext
     )
     self.player = AVPlayer(playerItem: self.playerItem)
-    self.player.play()
+//    self.player.play()
     if let chosenTime = seconds {
       self.player.seek(to: CMTimeMakeWithSeconds(chosenTime, preferredTimescale: 1_000))
     }
+  }
+  
+  public func play(){
+    self.player.play()
   }
   
   override public func observeValue(forKeyPath keyPath: String?,

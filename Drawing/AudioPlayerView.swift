@@ -5,22 +5,40 @@ import CoreGraphics
 public enum AudioPlayerState {
   case readyToPlay,
        loading,
-       pause
-  
+       playing
 }
+
+let backgroundColor = Color.init(red: 229/255, green: 229/255, blue: 229/255)
+let backgroundSecondaryColor = Color.init(red: 204/255, green: 204/255, blue: 206/255)
+let primaryColor = Color.init(red: 2/255, green: 104/255, blue: 167/255)
 
 public struct AudioPlayerView: View {
   //MARK:- Progresss between 0 and 1
   @Binding var progressInSeconds : Double
-  var lenghtOfVideosInSeconds : Int
+  @Binding var lenghtOfVideosInSeconds : Double
+  @Binding var state : AudioPlayerState
   @State var displayForward : String
   @State var displayBackward : String
+  var onTapPlay : (()->())?
+  var onPause : (()->())?
+  var onDarg : (()->())?
   
-  public init(progressInSeconds : Binding<Double> , lenghtOfVideosInSeconds :  Int) {
+  public init(
+    state : Binding<AudioPlayerState>,
+    progressInSeconds : Binding<Double> ,
+    lenghtOfVideosInSeconds :  Binding<Double>,
+  onTapPlay : (()->())? = nil,
+    onPause : (()->())? = nil,
+    onDarg : (()->())? = nil
+  ) {
+    _state = state
     _progressInSeconds = progressInSeconds
-    self.lenghtOfVideosInSeconds = lenghtOfVideosInSeconds
+    _lenghtOfVideosInSeconds = lenghtOfVideosInSeconds
     _displayForward = State(initialValue: AudioPlayerView.calDisplayForward(progressInSeconds.wrappedValue))
-    _displayBackward = State(initialValue: AudioPlayerView.calDisplayBackward(progressInSeconds.wrappedValue,lenght: lenghtOfVideosInSeconds))
+    _displayBackward = State(initialValue: AudioPlayerView.calDisplayBackward(progressInSeconds.wrappedValue,lenght: lenghtOfVideosInSeconds.wrappedValue))
+    self.onTapPlay = onTapPlay
+    self.onPause = onPause
+    self.onDarg = onDarg
   }
   
   private static func fraction(_ s : Int) -> (Int,Int,Int) {
@@ -29,32 +47,31 @@ public struct AudioPlayerView: View {
   
   public static func calDisplayForward(_ s : Double) -> String {
     let (_, minutes,seconds) = fraction(Int(floor(s)))
-    let k = String(format: "%02d:%02d", minutes,seconds)
+    let k = String(format: "%01d:%02d", minutes,seconds)
     return k
   }
   
-  public static func calDisplayBackward(_ s : Double,lenght : Int) -> String {
-    let remainingSeconds = Int(floor(Double(lenght) - s))
+  public static func calDisplayBackward(_ s : Double,lenght : Double) -> String {
+    let remainingSeconds = Int(floor(lenght - s))
     let (_, minutes,seconds) = fraction(remainingSeconds)
-    return String(format: "%02d:%02d", minutes,seconds)
+    return String(format: "%01d:%02d", minutes,seconds)
   }
   
   public var body: some View {
     GeometryReader {proxy in
       ZStack {
-        Capsule().fill(Color.gray)
+        Capsule().fill(backgroundColor)
         HStack(spacing: 2) {
-          PlayPauseLoadingIcon()
+          PlayPauseLoadingIcon(state: $state,onTapPlay: self.onTapPlay,onPause: self.onPause)
             .frame(width: min(proxy.size.width,proxy.size.height) ,
                    height: min(proxy.size.width,proxy.size.height))
           Text(displayForward).frame(width:50)
           VStack {
-            AudioProgressBarSlider(value: $progressInSeconds, in: 0...Double(lenghtOfVideosInSeconds), step: 1)
+            AudioProgressBarSlider(value: $progressInSeconds, in: 0...Double(lenghtOfVideosInSeconds), step: 1,onDrag: self.onDarg)
               .onChange(of: progressInSeconds, perform: { newValue in
                 self.displayForward = AudioPlayerView.calDisplayForward(newValue)
-                self.displayBackward = AudioPlayerView.calDisplayBackward(newValue, lenght: self.lenghtOfVideosInSeconds)
+                self.displayBackward = AudioPlayerView.calDisplayBackward(newValue, lenght: lenghtOfVideosInSeconds)
               })
-              .background(Color.blue)
           }
           Text(displayBackward).frame(width:50)
           Spacer()
@@ -64,55 +81,9 @@ public struct AudioPlayerView: View {
   }
 }
 
-struct PlayPauseLoadingIcon : View {
-  
-  var body: some View {
-    ZStack {
-      CircleAudioPlayer()
-        .fill(Color.black)
-      Playicon()
-        .fill(Color.blue)
-        .onTapGesture {print("tap")}
-    }
-  }
-  
-}
-
-struct CircleAudioPlayer: Shape {
-  func path(in rect: CGRect) -> Path {
-    var p = Path()
-    let padding : CGFloat = 12
-    let diameter = min(rect.width,rect.height) - padding
-    
-    p.addArc(
-      center: CGPoint(x: padding / 2 + diameter / 2, y: diameter / 2 + padding / 2),
-      radius: diameter / 2,
-      startAngle: .degrees(0),
-      endAngle: .degrees(360),
-      clockwise: true)
-    return p
-  }
-}
-
-struct Playicon : Shape {
-  
-  func path(in rect: CGRect) -> Path {
-    var p = Path()
-    let min = min(rect.width,rect.height)
-    let padding : CGFloat = min * 0.35
-    let diameter = min - padding
-    p.move(to: .init(x: padding, y: rect.minY + padding))
-    p.addLine(to: .init(x: diameter, y: rect.midY))
-    p.addLine(to: .init(x: padding, y: rect.maxY - padding))
-    p.closeSubpath()
-    return p
-  }
-  
-}
-
 struct AudioPlayerView_Previews: PreviewProvider {
   static var previews: some View {
-    AudioPlayerView.init(progressInSeconds: .constant(20), lenghtOfVideosInSeconds: 60)
+    AudioPlayerView.init(state: .constant(.playing), progressInSeconds: .constant(20), lenghtOfVideosInSeconds: .constant(60))
       .frame(height:55)
   }
 }
